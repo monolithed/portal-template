@@ -1,11 +1,11 @@
 # @monolithed/portal-template
 
-Пример шаблон портального архетипа
+Пример шаблона портального архетипа
 
 ## Установка
 
 ```
-git clone git@github.com:monolithed/fe-platform.git
+git clone git@github.com:monolithed/portal-template.git
 ```
 
 ## Запуск
