@@ -42,3 +42,5 @@ npm-debug.log
 *.js.map
 *.d.ts
 !/types/*.d.ts
+
+/dist
