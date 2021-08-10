@@ -90,8 +90,8 @@ module.exports = {
         }),
 
         new ModuleFederationPlugin({
-            name: '__tutorial_stream__',
-            filename: '__tutorial_stream__.js',
+            name: '__tutorial_stream',
+            filename: '__tutorial_stream.js',
             shared: {
                 'react': {
                     requiredVersion: dependencies.react
