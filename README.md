@@ -29,6 +29,7 @@ git clone git@github.com:monolithed/portal-template.git
 
 * Добавить примеры использования Consta
 * Поддержать PostCSS
+* ~~Поддержать механизм SRI~~
 * ~~Добавить мокер~~
 * Добавить тесты
 * Добавить менеджер состояний (Redux Toolkit)
