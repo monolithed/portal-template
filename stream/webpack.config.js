@@ -2,9 +2,13 @@ const webpack = require('webpack');
 const path = require('path');
 
 const WebpackAssetsManifest = require('webpack-assets-manifest');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const apiMocker = require('mocker-api');
 
 const {dependencies} = require('./package.json');
+const mocker = require('./mocker');
+
 const {DefinePlugin} = webpack;
 const {ModuleFederationPlugin} = webpack.container;
 
@@ -26,7 +30,15 @@ module.exports = {
         writeToDisk: true,
 
         // Автоматически открывать браузера после сборки
-        open: true
+        open: true,
+
+        // Заголовки бандлов
+        headers: mocker._proxy.header,
+
+        // Мокер
+        before(app) {
+            apiMocker(app, mocker);
+        }
     },
 
     mode: 'none',
@@ -47,12 +59,11 @@ module.exports = {
         publicPath: 'auto',
 
         // Очищать сборочную директорию
-        clean: true
+        clean: true,
 
         // chunkFilename: "[name]/[id].[chunkhash].chunk.js"
         // crossOriginLoading: 'anonymous', // use-credentials
     },
-
 
     module: {
         rules: [
@@ -73,11 +84,13 @@ module.exports = {
     },
 
     plugins: [
+        new webpack.ProgressPlugin(),
+
         new WebpackAssetsManifest({
             publicPath: '/',
             output: 'assets-manifest.json',
             integrity: true,
-            integrityHashes: ['sha256'],
+            integrityHashes: ['sha512'],
             space: 4
         }),
 
@@ -106,6 +119,10 @@ module.exports = {
             exposes: {
                 './Tutorial': './src/pages/Tutorial'
             }
+        }),
+
+        new CleanWebpackPlugin({
+            verbose: true
         })
     ]
 };
