@@ -31,7 +31,7 @@ git clone git@github.com:monolithed/portal-template.git
 * ~~Поддержать PostCSS~~
 * ~~Поддержать механизм SRI~~
 * ~~Добавить мокер~~
-* Добавить тесты Jest
+* ~~Добавить тесты Jest~~
 * Добавить ESLint
 * Добавить менеджер состояний (Redux Toolkit)
 * Поддержать установку через генератор проекта
