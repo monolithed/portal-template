@@ -32,9 +32,13 @@ const useBundle = (name: string): State => {
             }
 
             try {
-                const {script} = await addScript({src, integrity/*, crossOrigin: 'anonymous'*/});
-                setScriptLink(script);
+                const {script} = await addScript({
+                    src,
+                    integrity,
+                    crossOrigin: 'anonymous'
+                });
 
+                setScriptLink(script);
             } catch {
                 setError(`Could not append the "${name}" script`);
 

@@ -77,7 +77,7 @@ module.exports = {
             publicPath: '/',
             output: 'assets-manifest.json',
             integrity: true,
-            integrityHashes: ['sha512'],
+            integrityHashes: ['sha256'],
             space: 4
         }),
 
