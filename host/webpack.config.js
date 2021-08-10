@@ -1,143 +1,140 @@
-const {resolve} = require('path');
+const { resolve } = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const apiMocker = require('mocker-api');
 
-const {dependencies} = require('./package.json');
-const mocker = require('./mocker');
+const { dependencies } = require('./package.json');
+const mocker = require('./__mocks__/proxyApi');
 
-const {DefinePlugin, container} = webpack;
-const {ModuleFederationPlugin} = container;
+const { DefinePlugin, container } = webpack;
+const { ModuleFederationPlugin } = container;
 
 const SOURCE_PATH = 'src';
 
 module.exports = {
-    devServer: {
-        contentBase: resolve(__dirname, 'dist'),
-        hot: true,
-        port: 3001,
+  devServer: {
+    contentBase: resolve(__dirname, 'dist'),
+    hot: true,
+    port: 3001,
 
-        // Разршешить динамические пути в URL
-        historyApiFallback: true,
+    // Разршешить динамические пути в URL
+    historyApiFallback: true,
 
-        // Создавать сборочную директорию
-        writeToDisk: true,
+    // Создавать сборочную директорию
+    writeToDisk: true,
 
-        // Автоматически открывать браузера после сборки
-        open: true,
+    // Автоматически открывать браузера после сборки
+    open: true,
 
-        // Заголовки бандлов
-        headers: mocker._proxy.header,
+    // Заголовки бандлов
+    headers: mocker._proxy.header,
 
-        // Мокер
-        before(app) {
-            apiMocker(app, mocker);
-        }
+    // Мокер
+    before(app) {
+      apiMocker(app, mocker);
     },
+  },
 
-    mode: 'none',
+  mode: 'none',
 
-    entry: {
-        main: resolve(__dirname, SOURCE_PATH, 'index')
+  entry: {
+    main: resolve(__dirname, SOURCE_PATH, 'index'),
+  },
+
+  target: 'web',
+
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
+
+  output: {
+    filename: '[name].[contenthash].js',
+    path: resolve(__dirname, 'dist'),
+    publicPath: 'auto',
+
+    // Очищать сборочную директорию
+    clean: true,
+  },
+
+  experiments: {
+    topLevelAwait: true,
+  },
+
+  optimization: {
+    moduleIds: 'deterministic',
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
     },
+  },
 
-    target: 'web',
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
 
-    resolve: {
-        extensions: ['.tsx', '.ts', '.js']
-    },
+  plugins: [
+    // new webpack.DefinePlugin({
+    //     'process.env.NODE_ENV' : JSON.stringify('production')
+    // }),
 
-    output: {
-        filename: '[name].[contenthash].js',
-        path: resolve(__dirname, 'dist'),
-        publicPath: 'auto',
+    new webpack.ProgressPlugin(),
 
-        // Очищать сборочную директорию
-        clean: true
-    },
+    new WebpackAssetsManifest({
+      publicPath: '/',
+      output: 'assets-manifest.json',
+      integrity: true,
+      integrityHashes: ['sha512'],
+      space: 4,
+    }),
 
-    experiments: {
-        topLevelAwait: true
-    },
+    // new SubresourceIntegrityPlugin({
+    //     hashFuncNames: ['sha512']
+    // }),
 
-    optimization: {
-        moduleIds: 'deterministic',
-        runtimeChunk: 'single',
-        splitChunks: {
-            cacheGroups: {
-                vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    chunks: 'all'
-                }
-            }
-        }
-    },
+    new HtmlWebpackPlugin({
+      template: resolve(__dirname, SOURCE_PATH, 'index.html'),
+    }),
 
-    module: {
-        rules: [
-            {
-                test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/,
-            },
-            {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
-            }
-        ]
-    },
+    new DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
 
-    plugins: [
-        // new webpack.DefinePlugin({
-        //     'process.env.NODE_ENV' : JSON.stringify('production')
-        // }),
+    new ModuleFederationPlugin({
+      name: 'host',
+      filename: 'remoteEntry.js',
+      shared: {
+        react: {
+          requiredVersion: dependencies.react,
+        },
+        'react-dom': {
+          requiredVersion: dependencies['react-dom'],
+        },
+        '@reduxjs/toolkit': {
+          requiredVersion: dependencies['@reduxjs/toolkit'],
+        },
+      },
+    }),
 
-        new webpack.ProgressPlugin(),
-
-        new WebpackAssetsManifest({
-            publicPath: '/',
-            output: 'assets-manifest.json',
-            integrity: true,
-            integrityHashes: ['sha512'],
-            space: 4
-        }),
-
-        // new SubresourceIntegrityPlugin({
-        //     hashFuncNames: ['sha512']
-        // }),
-
-        new HtmlWebpackPlugin({
-            template: resolve(__dirname, SOURCE_PATH, 'index.html')
-        }),
-
-        new DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-        }),
-
-        new ModuleFederationPlugin({
-            name: 'host',
-            filename: 'remoteEntry.js',
-            shared: {
-                'react': {
-                    requiredVersion: dependencies.react
-                },
-                'react-dom': {
-                    requiredVersion: dependencies['react-dom']
-                },
-                '@reduxjs/toolkit': {
-                    requiredVersion: dependencies['@reduxjs/toolkit']
-                }
-            }
-        }),
-
-        new CleanWebpackPlugin({
-            verbose: true
-        })
-    ]
+    new CleanWebpackPlugin({
+      verbose: true,
+    }),
+  ],
 };
