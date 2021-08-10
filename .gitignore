@@ -40,7 +40,7 @@ yarn-error.log
 .idea
 .idea_modules/
 
-*.js
+#*.js
 *.js.map
-*.d.ts
-!/types/*.d.ts
+#*.d.ts
+#!/types/*.d.ts
