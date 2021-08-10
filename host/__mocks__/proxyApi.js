@@ -1,6 +1,10 @@
 const {resolve} = require('path');
-const assets = require('../../stream/dist/assets-manifest.json');
-const {devServer} = require('../../stream/webpack.config');
+
+const getStreamAssets = () => {
+    const file = resolve(__dirname, '../../stream/dist/assets-manifest.json');
+
+    return require(file);
+};
 
 const proxy = {
     _proxy: {
@@ -13,19 +17,16 @@ const proxy = {
 
     'GET /api/workspace/bundle': (request, response) => {
         const {name} = request.query;
+        const assets = getStreamAssets();
 
         const bundle = {
             ...assets[`${name}.js`]
         };
 
-        const url = new URL('http://localhost');
-
-        url.port = devServer.port;
+        const url = new URL('http://localhost:3006');
         url.pathname = bundle.src;
 
         bundle.src = url.href;
-
-        console.info(bundle);
 
         return response.json(bundle);
     }
