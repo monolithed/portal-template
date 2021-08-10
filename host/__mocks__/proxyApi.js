@@ -15,6 +15,8 @@ const proxy = {
         }
     },
 
+    // Этот метод возвращает объект сборки (src и integrity)
+    // В локальной среде данные берутся из файла assets-manifest.json
     'GET /api/workspace/bundle': (request, response) => {
         const {name} = request.query;
         const assets = getStreamAssets();
