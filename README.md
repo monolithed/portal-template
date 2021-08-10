@@ -56,7 +56,16 @@ git clone git@github.com:monolithed/portal-template.git
 1. Вебпак собирает 2 независимых приложения по схеме [Module Federation](https://webpack.js.org/concepts/module-federation/) (сценарий подгрузки бандлов подробно описан в [здесь](https://github.com/monolithed/module-federation-loader)).
 2. Через файл `assets-manifest.json` мы получаем пути и хеши сборок.
 3. Динамически создаем тэг script.
-4. Скрипт выполняется через глобальную переменную (`new ModuleFederationPlugin({name: '__tutorial_stream'})`). По этой причине старайтесь избежать конфликта имен и давайте названиям бандлов уникальные префиксы.
+4. Скрипт выполняется через глобальную переменную (ее создает сам вебпак):
+
+```js
+new ModuleFederationPlugin({
+    name: '__tutorial_stream'
+});
+```
+
+По этой причине старайтесь избежать конфликта имен и давайте названиям бандлов уникальные префиксы.
+
 6. Обращение к компонентам происходит так:
 
 ```tsx
