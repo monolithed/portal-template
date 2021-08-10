@@ -15,15 +15,15 @@ git clone git@github.com:monolithed/portal-template.git
 ### Стрим 
 
 1. Перейдите в директорию `stream`
-2. Повторите шаги выше
-3. Откройте в браузере `http://localhost:3006`
+2. Выполните `npm install`
+3. Запустите `npm start`
+4. Откройте в браузере `http://localhost:3006`
 
 ### Платформа 
 
 1. Перейдите в директорию `host`
-2. Выполните `npm install`
-3. Запустите `npm start`
-4. Откройте в браузере `http://localhost:3001`
+2. Повторите шаги выше
+3. Откройте в браузере `http://localhost:3001`
 
 У вас будет запущено 2 процесса: на порту 3001 будет корневое приложение (портал), а на 3006 стрим (приложение, которое подгрузится в портал).
 
@@ -38,6 +38,8 @@ git clone git@github.com:monolithed/portal-template.git
 * Добавить менеджер состояний (Redux Toolkit)
 * Поддержать установку через генератор проекта
 * react-router-loading?
+* react-query?
+* Разметить data-testid
 * Разнести сборочные конфиги на dev и prod
 * Возможно стоит подумать как управлять зависимостями (вынести их как в create-react-app)
 * Модули
@@ -74,11 +76,11 @@ new ModuleFederationPlugin({
 ```tsx
 import React, {FunctionComponent} from 'react';
 import {LazyModule} from '../../components/LazyModule';
-import {Bundles} from '../../Routes';
+import {Bundles} from '../../bundles';
 
 export const Video: FunctionComponent<any> = () => {
     return (
-        <LazyModule bundle={Bundles.TUTORIAL} module="./Tutorial">
+        <LazyModule bundle={Bundles.TUTORIAL} module="./Video">
             <LazyModule.Component />
         </LazyModule>
     );

@@ -38,19 +38,19 @@ module.exports = {
         // Мокер
         before(app) {
             apiMocker(app, mocker);
-        },
+        }
     },
 
     mode: 'none',
 
     entry: {
-        app: path.resolve(__dirname, 'src', 'index'),
+        app: path.resolve(__dirname, 'src', 'index')
     },
 
     target: 'web',
 
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.tsx', '.ts', '.js']
     },
 
     output: {
@@ -59,7 +59,7 @@ module.exports = {
         publicPath: 'auto',
 
         // Очищать сборочную директорию
-        clean: true,
+        clean: true
 
         // chunkFilename: "[name]/[id].[chunkhash].chunk.js"
         // crossOriginLoading: 'anonymous', // use-credentials
@@ -70,13 +70,13 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
-                exclude: /node_modules/,
+                exclude: /node_modules/
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
-            },
-        ],
+                use: ['style-loader', 'css-loader']
+            }
+        ]
     },
 
     plugins: [
@@ -91,15 +91,15 @@ module.exports = {
             output: 'assets-manifest.json',
             integrity: true,
             integrityHashes: ['sha512'],
-            space: 4,
+            space: 4
         }),
 
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, SOURCE_PATH, INDEX_FILE),
+            template: path.resolve(__dirname, SOURCE_PATH, INDEX_FILE)
         }),
 
         new DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
         }),
 
         new ModuleFederationPlugin({
@@ -107,22 +107,22 @@ module.exports = {
             filename: '[name].[contenthash].js',
             shared: {
                 react: {
-                    requiredVersion: dependencies.react,
+                    requiredVersion: dependencies.react
                 },
                 'react-dom': {
-                    requiredVersion: dependencies['react-dom'],
+                    requiredVersion: dependencies['react-dom']
                 },
                 'react-query': {
-                    requiredVersion: dependencies['react-query'],
-                },
+                    requiredVersion: dependencies['react-query']
+                }
             },
             exposes: {
-                './Tutorial': './src/pages/Tutorial',
-            },
+                './Video': './src/components/Video'
+            }
         }),
 
         new CleanWebpackPlugin({
-            verbose: true,
-        }),
-    ],
+            verbose: true
+        })
+    ]
 };

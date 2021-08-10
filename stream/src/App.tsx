@@ -1,8 +1,8 @@
 import React from 'react';
-import Tutorial from './pages/Tutorial';
+import Video from './components/Video';
 
 const App = () => (
-    <Tutorial />
+    <Video />
 );
 
 export {App};

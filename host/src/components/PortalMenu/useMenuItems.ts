@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Item} from '@consta/uikit/__internal__/src/components/Header/Menu/HeaderMenu';
 import {useHistory} from 'react-router-dom';
-import {Routes} from '../../Routes';
+import {Routes} from '../../routes';
 
 enum Menu {
     ABOUT = 'Локальный модуль',
@@ -16,7 +16,7 @@ const items: Item[] = [
     },
     {
         label: Menu.VIDEO,
-        href: Routes.VIDEO
+        href: Routes.TUTORIAL
     }
 ];
 

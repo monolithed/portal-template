@@ -3,7 +3,7 @@ enum Errors {
 }
 
 try {
-    (async () => await import('./Bootstrap'))();
+    (async () => await import('./bootstrap'))();
 } catch (error) {
     console.error(Errors.BOOTSTRAP_ERROR, error);
 }

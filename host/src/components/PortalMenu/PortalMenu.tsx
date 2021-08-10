@@ -9,7 +9,7 @@ import {
     HeaderLogo
 } from '@consta/uikit/Header';
 
-import {Routes} from '../../Routes';
+import {Routes} from '../../routes';
 import {Logo} from './Logo';
 import {useMenuItems} from './useMenuItems';
 

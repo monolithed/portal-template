@@ -19,12 +19,12 @@ import {
 } from '@consta/uikit/Theme';
 
 import {About} from './pages/About';
-import {Video} from './pages/Video';
+import {Tutorial} from './pages/Tutorial';
 
 import {PortalMenu} from './components/PortalMenu';
 import {Layout} from './components/Layout';
 
-import {Routes} from './Routes';
+import {Routes} from './routes';
 
 type Props = {};
 
@@ -44,8 +44,8 @@ const App: FunctionComponent<Props> = () => (
                             <About />
                         </Route>
 
-                        <Route path={Routes.VIDEO}>
-                            <Video />
+                        <Route path={Routes.TUTORIAL}>
+                            <Tutorial />
                         </Route>
                     </Switch>
                 </Layout>
