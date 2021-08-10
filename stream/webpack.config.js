@@ -76,14 +76,17 @@ module.exports = {
                 test: /\.css$/,
                 use: [
                     'style-loader',
-                    'css-loader',
-                    'postcss-loader'
+                    'css-loader'
                 ]
             }
         ]
     },
 
     plugins: [
+        // new webpack.DefinePlugin({
+        //     'process.env.NODE_ENV' : JSON.stringify('production')
+        // }),
+
         new webpack.ProgressPlugin(),
 
         new WebpackAssetsManifest({

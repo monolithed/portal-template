@@ -3,7 +3,7 @@ import React, {
     ReactNode
 } from 'react';
 
-import styles from './Layout.css';
+import styles from './Layout.module.css';
 
 type Props = {
     header: ReactNode;
