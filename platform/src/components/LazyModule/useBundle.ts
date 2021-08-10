@@ -21,9 +21,10 @@ const useBundle = (name: string): State => {
 
         (async (): Promise<void> => {
             let src: string;
+            let integrity: string;
 
             try {
-                ({src} = await fetchBundle({name}));
+                ({src, integrity} = await fetchBundle({name}));
             } catch {
                 setError(`Could not fetch the "${name}" bundle`);
 
@@ -31,7 +32,7 @@ const useBundle = (name: string): State => {
             }
 
             try {
-                const {script} = await addScript({src});
+                const {script} = await addScript({src, integrity/*, crossOrigin: 'anonymous'*/});
                 setScriptLink(script);
 
             } catch {
