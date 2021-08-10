@@ -4,7 +4,7 @@ import React, {
     useState
 } from 'react';
 
-import styles from './Preloder.css';
+import styles from './Preloder.module.css';
 
 type Props = {
     /* Состояние показа индикатора загрузки */
