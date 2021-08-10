@@ -20,7 +20,7 @@ type ServiceComponent<Props> = FunctionComponent<Props> & {
     Component: FunctionComponent<any>;
 };
 
-const LazyModule: ServiceComponent<Props> = ({children, bundle, module}): JSX.Element => {
+const LazyBundle: ServiceComponent<Props> = ({children, bundle, module}): JSX.Element => {
     const {loading} = useBundle(bundle);
 
     if (loading) {
@@ -43,7 +43,7 @@ const Component: FunctionComponent<any> = (props) => {
     return <div {...props} />;
 };
 
-LazyModule.Component = Component;
+LazyBundle.Component = Component;
 
-export {LazyModule};
+export {LazyBundle};
 export type {Props};

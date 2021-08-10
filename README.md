@@ -8,13 +8,18 @@
 git clone git@github.com:monolithed/portal-template.git
 ```
 
+## Терминология
+
+* **host** - родительское приложение
+* **stream** - дочернее приложение
+
 ## Запуск
 
 При локальной запуске строго соблюдайте последовательность — сперва стрим, после хост. Это нужно для того, чтобы хост мог найти сборку из стрима.
 
 ### Стрим 
 
-1. Перейдите в директорию `stream`
+1. Перейдите в директорию `tutorial-stream`
 2. Выполните `npm install`
 3. Запустите `npm start`
 4. Откройте в браузере `http://localhost:3006`
@@ -49,6 +54,7 @@ git clone git@github.com:monolithed/portal-template.git
 
 * Написать документацию
     * Генерация проекта
+    * Как прокидывать параметр в стрим
     * Где взять шаблоны и как написать свои
     * Сборка
     * Деплой
@@ -58,42 +64,37 @@ git clone git@github.com:monolithed/portal-template.git
 
 ### Механика работы
 
-1. Вебпак собирает 2 независимых приложения по схеме [Module Federation](https://webpack.js.org/concepts/module-federation/) (сценарий подгрузки бандлов подробно описан в [здесь](https://github.com/monolithed/module-federation-loader)).
-2. Через файл `assets-manifest.json` мы получаем пути и хеши сборок.
-3. Динамически создаем тэг script.
-4. Скрипт выполняется через глобальную переменную (ее создает сам вебпак):
+1. Вебпак собирает 2 независимых приложения по схеме [Module Federation](https://webpack.js.org/concepts/module-federation/) (пояснительный пример, как происходит подгрузка бандлов смотрите [здесь](https://github.com/monolithed/module-federation-loader)).
+2. Имя сборки прокидывается из конфига ModuleFederationPlugin. 
+3. Артефакты сборки сохраняются в файл `assets-manifest.json`.
+4. Как только пользователь запросит страницу сервер должен вернуть файл `assets-manifest.json`.
+5. Из полученных данных динамически [создается тэг](https://github.com/monolithed/module-federation-loader/blob/master/src/addScript.ts) `script`.
+6. После исполнения [скрипта](https://github.com/monolithed/module-federation-loader/blob/master/src/remoteLoader.ts) отрисовывается компонент 
 
-```js
-new ModuleFederationPlugin({
-    name: '__tutorial_stream'
-});
-```
-
-По этой причине старайтесь избежать конфликта имен и давайте названиям бандлов уникальные префиксы.
+Поскольку имена бандлов попадают в глобальное пространство имен старайтесь давать им уникальные название (по умолчанию используется название пакета).
 
 6. Обращение к компонентам происходит так:
 
 ```tsx
 import React, {FunctionComponent} from 'react';
-import {LazyModule} from '../../components/LazyModule';
+import {LazyBundle} from '../../components/LazyBundle';
 import {Bundles} from '../../bundles';
 
 export const Video: FunctionComponent<any> = () => {
     return (
-        <LazyModule bundle={Bundles.TUTORIAL} module="./Video">
-            <LazyModule.Component />
-        </LazyModule>
+        <LazyBundle bundle={Bundles.TUTORIAL} module="./Video">
+            <LazyBundle.Component />
+        </LazyBundle>
     );
 };
 ```
 
 ## Как пользоваться
 
-1. Разнесите host и stream на два независимых репозитория (стримов может быть неограниченное количество).
-2. Соберите host и разложите на стенд.
-3. Соберите стримы.
-4. Сборки со стримами положите на CDN.
-5. Создайте эндпоинт, который будет возвращать `assets-manifest.json`.
+1. Разнесите host и stream на два независимых репозитория (к слову, стримов может быть неограниченное количество).
+2. Соберите сборки и положите их на CDN.
+3. Создайте эндпоинт, который будет возвращать `assets-manifest.json`.
+4. Перед каждым обращением к стриму запрашиваейте у сервера артефакты сборки и передавайте их LazyBundle
 
 ## Лицензия
 

@@ -1,23 +1,27 @@
-const {resolve} = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const apiMocker = require('mocker-api');
 
-const {dependencies} = require('./package.json');
+const {name, dependencies} = require('./package.json');
 const mocker = require('./__mocks__/proxyApi');
 
-const {DefinePlugin, container} = webpack;
-const {ModuleFederationPlugin} = container;
+const {DefinePlugin} = webpack;
+const {ModuleFederationPlugin} = webpack.container;
 
 const SOURCE_PATH = 'src';
+const INDEX_FILE = 'index.html';
 
 module.exports = {
     devServer: {
-        contentBase: resolve(__dirname, 'dist'),
+        contentBase: path.resolve(__dirname, 'dist'),
         hot: true,
-        port: 3001,
+
+        // Порт, на котором будет запущено приложение и статика
+        port: 3006,
 
         // Разршешить динамические пути в URL
         historyApiFallback: true,
@@ -34,46 +38,31 @@ module.exports = {
         // Мокер
         before(app) {
             apiMocker(app, mocker);
-        },
+        }
     },
 
     mode: 'none',
 
     entry: {
-        main: resolve(__dirname, SOURCE_PATH, 'index'),
+        app: path.resolve(__dirname, 'src', 'index')
     },
 
     target: 'web',
 
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.tsx', '.ts', '.js']
     },
 
     output: {
         filename: '[name].[contenthash].js',
-        path: resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dist'),
         publicPath: 'auto',
 
         // Очищать сборочную директорию
-        clean: true,
-    },
+        clean: true
 
-    experiments: {
-        topLevelAwait: true,
-    },
-
-    optimization: {
-        moduleIds: 'deterministic',
-        runtimeChunk: 'single',
-        splitChunks: {
-            cacheGroups: {
-                vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    chunks: 'all',
-                },
-            },
-        },
+        // chunkFilename: "[name]/[id].[chunkhash].chunk.js"
+        // crossOriginLoading: 'anonymous', // use-credentials
     },
 
     module: {
@@ -81,19 +70,19 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
-                exclude: /node_modules/,
+                exclude: /node_modules/
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
-            },
-        ],
+                use: ['style-loader', 'css-loader']
+            }
+        ]
     },
 
     plugins: [
-        new DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        }),
+        // new webpack.DefinePlugin({
+        //     'process.env.NODE_ENV' : JSON.stringify('production')
+        // }),
 
         new webpack.ProgressPlugin(),
 
@@ -102,35 +91,42 @@ module.exports = {
             output: 'assets-manifest.json',
             integrity: true,
             integrityHashes: ['sha512'],
-            space: 4,
+            space: 4
         }),
 
-        // new SubresourceIntegrityPlugin({
-        //     hashFuncNames: ['sha512']
-        // }),
-
         new HtmlWebpackPlugin({
-            template: resolve(__dirname, SOURCE_PATH, 'index.html'),
+            template: path.resolve(__dirname, SOURCE_PATH, INDEX_FILE)
+        }),
+
+        new DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
         }),
 
         new ModuleFederationPlugin({
-            name: 'host',
-            filename: '[name].[contenthash].js',
+            name: 'stream',
+            filename: '[contenthash].js',
+            // library: {
+            //     type: "var",
+            //     name: ["containers", "containerName"]
+            // },
             shared: {
                 react: {
-                    requiredVersion: dependencies.react,
+                    requiredVersion: dependencies.react
                 },
                 'react-dom': {
-                    requiredVersion: dependencies['react-dom'],
+                    requiredVersion: dependencies['react-dom']
                 },
-                '@reduxjs/toolkit': {
-                    requiredVersion: dependencies['@reduxjs/toolkit'],
-                },
+                'react-query': {
+                    requiredVersion: dependencies['react-query']
+                }
             },
+            exposes: {
+                './Video': './src/components/Video'
+            }
         }),
 
         new CleanWebpackPlugin({
-            verbose: true,
-        }),
-    ],
+            verbose: true
+        })
+    ]
 };

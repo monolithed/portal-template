@@ -1,6 +1,8 @@
 {
-    "name": "host",
+    "name": "@consta/tutorial-host",
     "version": "1.0.0",
+    "author": "Aleksandr Abashkin <monolithed@gmail.com>",
+    "license": "MIT",
     "scripts": {
         "dev": "webpack --mode development",
         "start": "webpack serve --open --progress --mode development",
@@ -10,8 +12,6 @@
         "unit:watch": "jest --watch",
         "unit:clear": "jest --clearCache"
     },
-    "author": "Aleksandr Abashkin <monolithed@gmail.com>",
-    "license": "MIT",
     "devDependencies": {
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^12.0.0",

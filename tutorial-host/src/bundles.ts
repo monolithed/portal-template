@@ -1,5 +1,5 @@
 enum Bundles {
-    TUTORIAL = '__tutorial_stream'
+    TUTORIAL = 'stream'
 }
 
 export {Bundles};

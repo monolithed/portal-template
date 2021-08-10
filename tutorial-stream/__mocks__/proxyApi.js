@@ -1,5 +1,5 @@
-const assets = require('../../stream/dist/assets-manifest.json');
-const {devServer} = require('../../stream/webpack.config');
+const assets = require('../dist/assets-manifest.json');
+const {devServer} = require('../webpack.config');
 
 const proxy = {
     _proxy: {

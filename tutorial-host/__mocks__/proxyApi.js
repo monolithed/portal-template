@@ -1,7 +1,7 @@
 const {resolve} = require('path');
 
 const getStreamAssets = () => {
-    const file = resolve(__dirname, '../../stream/dist/assets-manifest.json');
+    const file = resolve(__dirname, '../../tutorial-stream/dist/assets-manifest.json');
 
     return require(file);
 };
