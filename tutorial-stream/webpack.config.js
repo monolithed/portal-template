@@ -105,6 +105,7 @@ module.exports = {
         new ModuleFederationPlugin({
             name: 'stream',
             filename: '[contenthash].js',
+
             // library: {
             //     type: "var",
             //     name: ["containers", "containerName"]
