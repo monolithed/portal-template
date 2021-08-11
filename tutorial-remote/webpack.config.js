@@ -103,7 +103,7 @@ module.exports = {
         }),
 
         new ModuleFederationPlugin({
-            name: 'stream',
+            name: 'remote',
             filename: '[contenthash].js',
 
             shared: {
