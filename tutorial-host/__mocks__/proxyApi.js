@@ -1,7 +1,7 @@
 const {resolve} = require('path');
 
-const getStreamAssets = () => {
-    const file = resolve(__dirname, '../../tutorial-stream/dist/assets-manifest.json');
+const getRemoteAssets = () => {
+    const file = resolve(__dirname, '../../tutorial-remote/dist/assets-manifest.json');
 
     return require(file);
 };
@@ -19,7 +19,7 @@ const proxy = {
     // В локальной среде данные берутся из файла assets-manifest.json
     'GET /api/workspace/bundle': (request, response) => {
         const {name} = request.query;
-        const assets = getStreamAssets();
+        const assets = getRemoteAssets();
 
         const bundle = {
             ...assets[`${name}.js`]

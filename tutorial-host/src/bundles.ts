@@ -1,5 +1,5 @@
 enum Bundles {
-    TUTORIAL = 'stream'
+    TUTORIAL = 'remote'
 }
 
 export {Bundles};

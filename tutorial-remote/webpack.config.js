@@ -106,10 +106,6 @@ module.exports = {
             name: 'stream',
             filename: '[contenthash].js',
 
-            // library: {
-            //     type: "var",
-            //     name: ["containers", "containerName"]
-            // },
             shared: {
                 react: {
                     requiredVersion: dependencies.react
