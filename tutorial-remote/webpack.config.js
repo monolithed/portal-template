@@ -6,7 +6,7 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const apiMocker = require('mocker-api');
 
-const {name, dependencies} = require('./package.json');
+const {dependencies} = require('./package.json');
 const mocker = require('./__mocks__/proxyApi');
 
 const {DefinePlugin} = webpack;
@@ -59,7 +59,8 @@ module.exports = {
         publicPath: 'auto',
 
         // Очищать сборочную директорию
-        clean: true
+        // С включением этой опции придется каждый раз перезупскать процессы
+        // clean: true
 
         // chunkFilename: "[name]/[id].[chunkhash].chunk.js"
         // crossOriginLoading: 'anonymous', // use-credentials

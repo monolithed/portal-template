@@ -52,7 +52,7 @@ module.exports = {
     output: {
         filename: '[name].[contenthash].js',
         path: resolve(__dirname, 'dist'),
-        publicPath: 'auto',
+        publicPath: '/',
 
         // Очищать сборочную директорию
         clean: true,
@@ -98,7 +98,7 @@ module.exports = {
         new webpack.ProgressPlugin(),
 
         new WebpackAssetsManifest({
-            publicPath: '/',
+            publicPath: '/dist',
             output: 'assets-manifest.json',
             integrity: true,
             integrityHashes: ['sha512'],
