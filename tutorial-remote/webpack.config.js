@@ -80,8 +80,8 @@ module.exports = {
     },
 
     plugins: [
-        // new webpack.DefinePlugin({
-        //     'process.env.NODE_ENV' : JSON.stringify('production')
+        // new DefinePlugin({
+        //     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
         // }),
 
         new webpack.ProgressPlugin(),
@@ -98,13 +98,9 @@ module.exports = {
             template: path.resolve(__dirname, SOURCE_PATH, INDEX_FILE)
         }),
 
-        new DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-        }),
-
         new ModuleFederationPlugin({
             name: 'remote',
-            filename: '[contenthash].js',
+            filename: '[name].[contenthash].js',
 
             shared: {
                 react: {

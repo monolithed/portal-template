@@ -91,9 +91,9 @@ module.exports = {
     },
 
     plugins: [
-        new DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        }),
+        // new DefinePlugin({
+        //     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        // }),
 
         new webpack.ProgressPlugin(),
 
@@ -115,7 +115,7 @@ module.exports = {
 
         new ModuleFederationPlugin({
             name: 'host',
-            filename: '[contenthash].js',
+            filename: '[name].[contenthash].js',
             shared: {
                 react: {
                     requiredVersion: dependencies.react,
