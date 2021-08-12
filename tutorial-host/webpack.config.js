@@ -132,6 +132,9 @@ module.exports = {
                 '@reatom/react': {
                     requiredVersion: dependencies['@reatom/react'],
                 },
+                'react-router-dom': {
+                    requiredVersion: dependencies['react-router-dom'],
+                },
             },
         }),
 
