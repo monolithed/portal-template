@@ -1,15 +1,15 @@
-const {resolve} = require('path');
+const { resolve } = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const apiMocker = require('mocker-api');
 
-const {name, dependencies} = require('./package.json');
+const { name, dependencies } = require('./package.json');
 const mocker = require('./__mocks__/proxyApi');
 
-const {DefinePlugin, container} = webpack;
-const {ModuleFederationPlugin} = container;
+const { DefinePlugin, container } = webpack;
+const { ModuleFederationPlugin } = container;
 
 const SOURCE_PATH = 'src';
 
@@ -117,14 +117,20 @@ module.exports = {
             name: 'host',
             filename: '[name].[contenthash].js',
             shared: {
-                react: {
+                'react': {
                     requiredVersion: dependencies.react,
                 },
                 'react-dom': {
                     requiredVersion: dependencies['react-dom'],
                 },
-                '@reduxjs/toolkit': {
-                    requiredVersion: dependencies['@reduxjs/toolkit'],
+                '@consta/uikit': {
+                    requiredVersion: dependencies['@consta/uikit'],
+                },
+                '@reatom/core': {
+                    requiredVersion: dependencies['@reatom/core'],
+                },
+                '@reatom/react': {
+                    requiredVersion: dependencies['@reatom/react'],
                 },
             },
         }),

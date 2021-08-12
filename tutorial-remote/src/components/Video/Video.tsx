@@ -1,15 +1,15 @@
-import React, {
-    FunctionComponent
-} from 'react';
+import React, { FunctionComponent } from 'react';
 
-import YouTube from 'react-youtube';
+import { VideoBlock } from './VideoBlock/VideoBlock';
+import { Tabs } from './Tabs/Tabs';
 
 type Props = JSX.IntrinsicElements['section'];
 
 const Video: FunctionComponent<Props> = (props) => (
     <section {...props}>
-        <YouTube videoId='-ei6RqZilYI' opts={{height: '405', width: '720'}} />
+        <Tabs />
+        <VideoBlock />
     </section>
 );
 
-export {Video};
+export { Video };

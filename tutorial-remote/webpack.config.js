@@ -2,15 +2,15 @@ const webpack = require('webpack');
 const path = require('path');
 
 const WebpackAssetsManifest = require('webpack-assets-manifest');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const apiMocker = require('mocker-api');
 
-const {dependencies} = require('./package.json');
+const { dependencies } = require('./package.json');
 const mocker = require('./__mocks__/proxyApi');
 
-const {DefinePlugin} = webpack;
-const {ModuleFederationPlugin} = webpack.container;
+const { DefinePlugin } = webpack;
+const { ModuleFederationPlugin } = webpack.container;
 
 const SOURCE_PATH = 'src';
 const INDEX_FILE = 'index.html';
@@ -38,19 +38,19 @@ module.exports = {
         // Мокер
         before(app) {
             apiMocker(app, mocker);
-        }
+        },
     },
 
     mode: 'none',
 
     entry: {
-        app: path.resolve(__dirname, 'src', 'index')
+        app: path.resolve(__dirname, 'src', 'index'),
     },
 
     target: 'web',
 
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.tsx', '.ts', '.js'],
     },
 
     output: {
@@ -71,13 +71,13 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
-                exclude: /node_modules/
+                exclude: /node_modules/,
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
-            }
-        ]
+                use: ['style-loader', 'css-loader'],
+            },
+        ],
     },
 
     plugins: [
@@ -92,11 +92,11 @@ module.exports = {
             output: 'assets-manifest.json',
             integrity: true,
             integrityHashes: ['sha512'],
-            space: 4
+            space: 4,
         }),
 
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, SOURCE_PATH, INDEX_FILE)
+            template: path.resolve(__dirname, SOURCE_PATH, INDEX_FILE),
         }),
 
         new ModuleFederationPlugin({
@@ -104,23 +104,32 @@ module.exports = {
             filename: '[name].[contenthash].js',
 
             shared: {
-                react: {
-                    requiredVersion: dependencies.react
+                'react': {
+                    requiredVersion: dependencies.react,
                 },
                 'react-dom': {
-                    requiredVersion: dependencies['react-dom']
+                    requiredVersion: dependencies['react-dom'],
                 },
                 'react-query': {
-                    requiredVersion: dependencies['react-query']
-                }
+                    requiredVersion: dependencies['react-query'],
+                },
+                '@consta/uikit': {
+                    requiredVersion: dependencies['@consta/uikit'],
+                },
+                '@reatom/core': {
+                    requiredVersion: dependencies['@reatom/core'],
+                },
+                '@reatom/react': {
+                    requiredVersion: dependencies['@reatom/react'],
+                },
             },
             exposes: {
-                './Video': './src/components/Video'
-            }
+                './Video': './src/components/Video',
+            },
         }),
 
         new CleanWebpackPlugin({
-            verbose: true
-        })
-    ]
+            verbose: true,
+        }),
+    ],
 };
