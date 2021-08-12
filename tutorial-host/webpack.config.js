@@ -52,7 +52,7 @@ module.exports = {
     output: {
         filename: '[name].[contenthash].js',
         path: resolve(__dirname, 'dist'),
-        publicPath: 'auto',
+        publicPath: '/',
 
         // Очищать сборочную директорию
         clean: true,
@@ -91,14 +91,14 @@ module.exports = {
     },
 
     plugins: [
-        new DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        }),
+        // new DefinePlugin({
+        //     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        // }),
 
         new webpack.ProgressPlugin(),
 
         new WebpackAssetsManifest({
-            publicPath: '/',
+            publicPath: '/dist',
             output: 'assets-manifest.json',
             integrity: true,
             integrityHashes: ['sha512'],
@@ -115,7 +115,7 @@ module.exports = {
 
         new ModuleFederationPlugin({
             name: 'host',
-            filename: '[contenthash].js',
+            filename: '[name].[contenthash].js',
             shared: {
                 'react': {
                     requiredVersion: dependencies.react,

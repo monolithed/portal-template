@@ -1,4 +1,4 @@
-const proxy = {
+module.exports = {
     _proxy: {
         header: {
             'Access-Control-Allow-Origin': '*',
@@ -7,5 +7,3 @@ const proxy = {
         }
     }
 };
-
-module.exports = proxy;

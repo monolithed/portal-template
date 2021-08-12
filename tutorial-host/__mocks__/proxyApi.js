@@ -1,12 +1,7 @@
-const {resolve} = require('path');
+const fetch = require('node-fetch');
+const bundles = require('./bundles');
 
-const getRemoteAssets = () => {
-    const file = resolve(__dirname, '../../tutorial-remote/dist/assets-manifest.json');
-
-    return require(file);
-};
-
-const proxy = {
+module.exports = {
     _proxy: {
         header: {
             'Access-Control-Allow-Origin': '*',
@@ -16,22 +11,22 @@ const proxy = {
     },
 
     // Этот метод возвращает объект сборки (src и integrity)
-    // В локальной среде данные берутся из файла assets-manifest.json
-    'GET /api/workspace/bundle': (request, response) => {
+    // В локальной среде данные берутся из файлов assets-manifest.json
+    'GET /api/workspace/bundle': async (request, response) => {
+        const assetsUrl = `${bundles.tutorial}/assets-manifest.json`;
         const {name} = request.query;
-        const assets = getRemoteAssets();
 
-        const bundle = {
-            ...assets[`${name}.js`]
-        };
+        const assetsRequest = await fetch(assetsUrl);
+        const assets = await assetsRequest.json();
+        const {src, integrity} = assets[`${name}.js`];
 
-        const url = new URL('http://localhost:3006');
-        url.pathname = bundle.src;
+        const url = new URL(assetsUrl);
+        url.pathname = src;
 
-        bundle.src = url.href;
-
-        return response.json(bundle);
+        return response.json({
+            src: url,
+            integrity
+        });
     }
 };
 
-module.exports = proxy;
