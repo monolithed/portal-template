@@ -7,10 +7,11 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Theme, presetGpnDefault } from '@consta/uikit/Theme';
 
 import { createStore } from '@reatom/core';
-import { context } from '@reatom/react';
+import { context as ReatomContext } from '@reatom/react';
 
 import { About } from './pages/About';
 import { Tutorial } from './pages/Tutorial';
+import { RouterExample } from './pages/RouterExample';
 
 import { PortalMenu } from './components/PortalMenu';
 import { Layout } from './components/Layout';
@@ -25,7 +26,7 @@ const App: FunctionComponent<Props> = () => {
     const store = createStore();
 
     return (
-        <context.Provider value={store}>
+        <ReatomContext.Provider value={store}>
             <QueryClientProvider client={queryClient}>
                 <Theme preset={presetGpnDefault}>
                     <BrowserRouter>
@@ -41,13 +42,14 @@ const App: FunctionComponent<Props> = () => {
 
                                 <Route path={Routes.TUTORIAL}>
                                     <Tutorial />
+                                    <RouterExample />
                                 </Route>
                             </Switch>
                         </Layout>
                     </BrowserRouter>
                 </Theme>
             </QueryClientProvider>
-        </context.Provider>
+        </ReatomContext.Provider>
     );
 };
 

@@ -2,12 +2,12 @@ import React, { FunctionComponent } from 'react';
 import { LazyBundle } from '../../components/LazyBundle';
 import { Bundles } from '../../bundles';
 
-const Tutorial: FunctionComponent<any> = () => {
+const RouterExample: FunctionComponent<any> = () => {
     return (
-        <LazyBundle bundle={Bundles.TUTORIAL} module="./Video">
+        <LazyBundle bundle={Bundles.TUTORIAL} module="./VideoWithRouter">
             <LazyBundle.Component />
         </LazyBundle>
     );
 };
 
-export { Tutorial };
+export { RouterExample };
