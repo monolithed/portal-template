@@ -1,22 +1,37 @@
-import React, { FunctionComponent } from 'react';
+import React, {
+    FunctionComponent
+} from 'react';
 
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import {
+    BrowserRouter,
+    Switch,
+    Route
+} from 'react-router-dom';
 
-import { QueryClient, QueryClientProvider } from 'react-query';
+import {
+    QueryClient,
+    QueryClientProvider
+} from 'react-query';
 
-import { Theme, presetGpnDefault } from '@consta/uikit/Theme';
+import {
+    Theme,
+    presetGpnDefault
+} from '@consta/uikit/Theme';
 
-import { createStore } from '@reatom/core';
-import { context as ReatomContext } from '@reatom/react';
+import {
+    createStore
+} from '@reatom/core';
 
-import { About } from './pages/About';
-import { Tutorial } from './pages/Tutorial';
-import { RouterExample } from './pages/RouterExample';
+import {
+    context as ReatomContext
+} from '@reatom/react';
 
-import { PortalMenu } from './components/PortalMenu';
-import { Layout } from './components/Layout';
+import {About} from './pages/About';
+import {Tutorial} from './pages/Tutorial';
+import {PortalMenu} from './components/PortalMenu';
+import {Layout} from './components/Layout';
 
-import { Routes } from './routes';
+import {Routes} from './routes';
 
 type Props = {};
 
@@ -42,7 +57,6 @@ const App: FunctionComponent<Props> = () => {
 
                                 <Route path={Routes.TUTORIAL}>
                                     <Tutorial />
-                                    <RouterExample />
                                 </Route>
                             </Switch>
                         </Layout>
@@ -53,4 +67,4 @@ const App: FunctionComponent<Props> = () => {
     );
 };
 
-export { App };
+export {App};

@@ -1,7 +1,7 @@
 enum Routes {
     HOME = '/',
-    ABOUT = `/about`,
-    TUTORIAL = '/tutorial',
+    ABOUT = '/about',
+    TUTORIAL = '/tutorial'
 }
 
-export { Routes };
+export {Routes};

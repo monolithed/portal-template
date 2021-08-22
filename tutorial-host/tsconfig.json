@@ -2,7 +2,7 @@
     "compilerOptions": {
         "lib": [
             "DOM",
-            "ES2015"
+            "ES2017"
         ],
         "baseUrl": ".",
         "outDir": "./dist/",

@@ -1,10 +1,14 @@
-import { remoteLoader } from '@monolithed/module-federation-loader';
-import { ErrorBoundary } from '@monolithed/error-boundary-component';
+import React, {
+    FunctionComponent,
+    Suspense,
+    lazy
+} from 'react';
 
-import React, { FunctionComponent, Suspense, lazy } from 'react';
+import {remoteLoader} from '@monolithed/module-federation-loader';
+import {ErrorBoundary} from '@monolithed/error-boundary-component';
+import {SkeletonText} from '@consta/uikit/Skeleton';
 
-import { SkeletonText } from '@consta/uikit/Skeleton';
-import { useBundle } from './useBundle';
+import {useBundle} from './useBundle';
 
 type Props = {
     bundle: string;
@@ -16,14 +20,14 @@ type ServiceComponent<Props> = FunctionComponent<Props> & {
     Component: FunctionComponent<any>;
 };
 
-const LazyBundle: ServiceComponent<Props> = ({ children, bundle, module }): JSX.Element => {
-    const { loading } = useBundle(bundle);
+const LazyBundle: ServiceComponent<Props> = ({children, bundle, module}): JSX.Element => {
+    const {loading} = useBundle(bundle);
 
     if (loading) {
         return <SkeletonText rows={4} />;
     }
 
-    const remoteModule = remoteLoader({ bundle, module });
+    const remoteModule = remoteLoader({bundle, module});
     const Component = lazy(remoteModule);
 
     return (
@@ -41,5 +45,5 @@ const Component: FunctionComponent<any> = (props) => {
 
 LazyBundle.Component = Component;
 
-export { LazyBundle };
-export type { Props };
+export {LazyBundle};
+export type {Props};

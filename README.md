@@ -40,12 +40,12 @@ git clone git@github.com:monolithed/portal-template.git
 * ~~Поддержать механизм SRI~~
 * ~~Добавить мокер~~
 * ~~Добавить тесты Jest~~
-* Добавить ESLint
-* Добавить менеджер состояний (Redux Toolkit)
+* ~~Добавить менеджер состояний (Redux Toolkit)~~
+* ~~Разметить data-test-id~~
 * Поддержать установку через генератор проекта
+* Добавить ESLint
 * react-router-loading?
 * react-query?
-* Разметить data-testid
 * Разнести сборочные конфиги на dev и prod
 * Возможно стоит подумать как управлять зависимостями (вынести их как в create-react-app)
 * Модули

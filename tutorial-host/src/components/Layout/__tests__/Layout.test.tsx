@@ -1,18 +1,15 @@
 import * as React from 'react';
-import {render, screen} from '@testing-library/react';
+
 import {Layout} from '../Layout';
+import {renderWithRouter} from '../../../../__tests__/utils/renderWithRouter';
 
 type LayoutProps = React.ComponentProps<typeof Layout>;
 
 const testId = 'Layout';
 
 const renderComponent = (props: LayoutProps) => {
-    return render(<Layout data-testid={testId} {...props} />);
+    return renderWithRouter(<Layout data-test-id={testId} {...props} />);
 };
-
-function getRender() {
-    return screen.getByTestId(testId);
-}
 
 describe('Компонент Layout', () => {
     const header = 'header';
@@ -22,14 +19,16 @@ describe('Компонент Layout', () => {
     });
 
     it(`Header отображается`, () => {
-        renderComponent({header});
-        expect(getRender()).toHaveTextContent(header);
+        const {getByText} = renderComponent({header});
+
+        getByText(header);
     });
 
     it(`Children отображается`, () => {
         const children = 'children';
 
-        renderComponent({children, header});
-        expect(getRender()).toHaveTextContent(children);
+        const {getByText} = renderComponent({children, header});
+
+        getByText(children);
     });
 });
