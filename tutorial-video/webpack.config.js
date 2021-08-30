@@ -143,6 +143,11 @@ const config = {
             name: 'remote',
             filename: '[name].[contenthash].js',
 
+            library: {
+              name: name,
+              type: 'global'
+            },
+
             // Указывайте здесь список зависимостей, которые пересекаются с родительским контейнером.
             // webpack поможет исключить дубликаты и получить доступ к общим зависимостям.
             shared: {

@@ -11,7 +11,7 @@ type State = {
     error?: string;
 }
 
-const useBundle = (name: string): State => {
+const useLoader = (name: string): State => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>();
     const [scriptLink, setScriptLink] = useState<HTMLScriptElement>();
@@ -57,4 +57,4 @@ const useBundle = (name: string): State => {
     return {loading, error};
 };
 
-export {useBundle};
+export {useLoader};

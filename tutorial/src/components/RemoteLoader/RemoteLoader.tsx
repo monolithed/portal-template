@@ -8,10 +8,10 @@ import {remoteLoader} from '@monolithed/module-federation-loader';
 import {ErrorBoundary} from '@monolithed/error-boundary-component';
 import {SkeletonText} from '@consta/uikit/Skeleton';
 
-import {useBundle} from './useBundle';
+import {useLoader} from './useLoader';
 
 type Props = {
-    bundle: string;
+    remote: string;
     module: string;
     children?: any;
 };
@@ -20,14 +20,14 @@ type ServiceComponent<Props> = FunctionComponent<Props> & {
     Component: FunctionComponent<any>;
 };
 
-const LazyBundle: ServiceComponent<Props> = ({children, bundle, module}): JSX.Element => {
-    const {loading} = useBundle(bundle);
+const RemoteLoader: ServiceComponent<Props> = ({children, remote, module}): JSX.Element => {
+    const {loading} = useLoader(remote);
 
     if (loading) {
         return <SkeletonText rows={4} />;
     }
 
-    const remoteModule = remoteLoader({bundle, module});
+    const remoteModule = remoteLoader({bundle: remote, module});
     const Component = lazy(remoteModule);
 
     return (
@@ -43,7 +43,7 @@ const Component: FunctionComponent<any> = (props) => {
     return <div {...props} />;
 };
 
-LazyBundle.Component = Component;
+RemoteLoader.Component = Component;
 
-export {LazyBundle};
+export {RemoteLoader};
 export type {Props};

@@ -31,7 +31,7 @@ git clone git@github.com:monolithed/portal-template.git
 3. Откройте в браузере `http://localhost:3001`
 
 Так у вас появятся 2 процесса: на порту 3001 будет корневое приложение, а на 3006 удаленное.
-Порты задаются в самих приложениях, а их маппинг в файле `__mocks__/remotes.js`, т.е. если вы захотите добавить новый remote, то поправьте этот файл, чтобы host мог его найти.
+Порты задаются в самих приложениях, а их маппинг в файле `__mocks__/remotes.ts`, т.е. если вы захотите добавить новый remote, то поправьте этот файл, чтобы host мог его найти.
 
 ## TODO
 
@@ -42,6 +42,7 @@ git clone git@github.com:monolithed/portal-template.git
 * ~~Добавить тесты Jest~~
 * ~~Добавить менеджер состояний (Redux Toolkit)~~
 * ~~Разметить data-test-id~~
+* Не подгужаются стили в remote
 * Поддержать установку через генератор проекта
 * Обработать случаи когда не загружается remote (происходит ошибка внутри remoteLoader)
 * Добавить ESLint
@@ -80,14 +81,14 @@ git clone git@github.com:monolithed/portal-template.git
 
 ```tsx
 import React, {FunctionComponent} from 'react';
-import {LazyBundle} from '../../components/LazyBundle';
-import {Bundles} from '../../bundles';
+import {RemoteLoader} from '../../components/RemoteLoader';
+import {Remotes} from '../../bundles';
 
 export const Video: FunctionComponent<any> = () => {
     return (
-        <LazyBundle bundle={Bundles.TUTORIAL} module="./Video">
-            <LazyBundle.Component />
-        </LazyBundle>
+        <RemoteLoader bundle={Remotes.TUTORIAL} module="./Video">
+            <RemoteLoader.Component />
+        </RemoteLoader>
     );
 };
 ```
@@ -107,7 +108,7 @@ ui-gazprom-neft-login
 1. Разнесите host и remote's на два независимые репозитории.
 2. Соберите сборки и положите их на CDN.
 3. Создайте эндпоинт, который будет возвращать данные из `assets-manifest.json` (по типу запроса `/api/workspace/bundle`).
-4. Перед каждым обращением к стриму запрашиваейте у сервера артефакты сборки и передавайте их LazyBundle.
+4. Перед каждым обращением к стриму запрашиваейте у сервера артефакты сборки и передавайте их RemoteLoader.
 
 ## Лицензия
 
