@@ -1,8 +1,9 @@
 const fetch = require('node-fetch');
-const bundles = require('./bundles');
+const remotes = require('./remotes');
 
 module.exports = {
     _proxy: {
+        // Заголовки, которые будут подставляться в ответы от сервера
         header: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
@@ -13,12 +14,12 @@ module.exports = {
     // Этот метод возвращает объект сборки (src и integrity)
     // В локальной среде данные берутся из файлов assets-manifest.json
     'GET /api/workspace/bundle': async (request, response) => {
-        const assetsUrl = `${bundles.tutorial}/assets-manifest.json`;
         const {name} = request.query;
+        const assetsUrl = `${remotes[name]}/assets-manifest.json`;
 
         const assetsRequest = await fetch(assetsUrl);
         const assets = await assetsRequest.json();
-        const {src, integrity} = assets[`${name}.js`];
+        const {src, integrity} = assets[`remote.js`];
 
         const url = new URL(assetsUrl);
         url.pathname = src;
@@ -29,4 +30,3 @@ module.exports = {
         });
     }
 };
-

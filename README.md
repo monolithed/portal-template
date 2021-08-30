@@ -31,7 +31,7 @@ git clone git@github.com:monolithed/portal-template.git
 3. Откройте в браузере `http://localhost:3001`
 
 Так у вас появятся 2 процесса: на порту 3001 будет корневое приложение, а на 3006 удаленное.
-Порты задаются в самих приложениях, а их маппинг в файле `__mocks__/bundles.js`, т.е. если вы захотите добавить новый remote, то поправьте этот файл, чтобы host мог его найти.
+Порты задаются в самих приложениях, а их маппинг в файле `__mocks__/remotes.js`, т.е. если вы захотите добавить новый remote, то поправьте этот файл, чтобы host мог его найти.
 
 ## TODO
 
@@ -43,6 +43,7 @@ git clone git@github.com:monolithed/portal-template.git
 * ~~Добавить менеджер состояний (Redux Toolkit)~~
 * ~~Разметить data-test-id~~
 * Поддержать установку через генератор проекта
+* Обработать случаи когда не загружается remote (происходит ошибка внутри remoteLoader)
 * Добавить ESLint
 * react-router-loading?
 * react-query?
@@ -62,6 +63,7 @@ git clone git@github.com:monolithed/portal-template.git
     * Моки
     * Как работать с API
     * Тесты (как готовить код для e2e тестов, как писать модульные тесты)
+
 
 ### Механика работы
 
@@ -89,6 +91,16 @@ export const Video: FunctionComponent<any> = () => {
     );
 };
 ```
+
+### Система именований
+
+1. `<project>`
+2. `<project>-<stream>`
+
+ui-gazprom-neft
+ui-gazprom-neft-about
+ui-gazprom-neft-login
+
 
 ## Сборка
 

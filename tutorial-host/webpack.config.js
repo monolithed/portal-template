@@ -1,19 +1,20 @@
 const {resolve} = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const apiMocker = require('mocker-api');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const {SubresourceIntegrityPlugin} = require('webpack-subresource-integrity');
+const open = require('open');
+const mocker = require('mocker-api');
 
 const {name, dependencies} = require('./package.json');
-const mocker = require('./__mocks__/proxyApi');
+const api = require('./__mocks__/api');
 
-const {DefinePlugin, container} = webpack;
+const {container} = webpack;
 const {ModuleFederationPlugin} = container;
 
-const SOURCE_PATH = 'src';
-
-module.exports = {
+const config = {
     devServer: {
         // Сборочная директория
         contentBase: resolve(__dirname, 'dist'),
@@ -21,7 +22,10 @@ module.exports = {
         // Горячая перезагрузка
         hot: true,
 
-        // Порт, на котором будет запущено приложение и статика
+        // Хост
+        host: 'localhost',
+
+        // Порт
         port: 3001,
 
         // Разршешить динамические пути в URL
@@ -30,43 +34,55 @@ module.exports = {
         // Создавать сборочную директорию
         writeToDisk: true,
 
-        // Автоматически открывать браузера после сборки
-        open: true,
-
         // Заголовки бандлов
-        headers: mocker._proxy.header,
+        headers: api._proxy.header,
 
-        // Мокер
+        // Мокер запросов
         before(app) {
-            apiMocker(app, mocker);
+            mocker(app, api);
+        },
+
+        // Открыть новую или использовать уже существующую вкладку
+        after: async () => {
+            const {host, port} = config.devServer;
+
+            await open(`http://${host}:${port}`);
         }
     },
 
+    // Тип сборки
+    target: 'web',
+
+    // Режим сборки
     mode: 'none',
 
-    entry: {
-        main: resolve(__dirname, SOURCE_PATH, 'index')
-    },
-
-    target: 'web',
+    // Входная точка
+    entry: resolve(__dirname, 'src', 'index'),
 
     resolve: {
         extensions: ['.tsx', '.ts', '.js']
     },
 
     output: {
+        // Имя файла со сборкой
         filename: '[name].[contenthash].js',
-        path: resolve(__dirname, 'dist'),
-        publicPath: '/',
 
-        // Очищать сборочную директорию
-        clean: true
+        // Путь куда складывать артефакты сборки
+        path: resolve(__dirname, 'dist'),
+
+        // Хост, который будет добавлен к имени файла
+        // ВНИМАНИЕ: Не меняйте значение auto, иначе получите ошибку ChunkLoadError у загружаемого модуля
+        publicPath: 'auto',
+
+        // chunkFilename: " [name]/[id].[chunkhash].chunk.js"
+        crossOriginLoading: 'anonymous', // use-credentials
     },
 
     experiments: {
         topLevelAwait: true
     },
 
+/*
     optimization: {
         moduleIds: 'deterministic',
         runtimeChunk: 'single',
@@ -80,6 +96,7 @@ module.exports = {
             }
         }
     },
+*/
 
     module: {
         rules: [
@@ -90,37 +107,58 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
             }
         ]
     },
 
     plugins: [
-        // new DefinePlugin({
-        //     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-        // }),
-
-        new webpack.ProgressPlugin(),
-
-        new WebpackAssetsManifest({
-            publicPath: '/dist',
-            output: 'assets-manifest.json',
-            integrity: true,
-            integrityHashes: ['sha512'],
-            space: 4
+        new SubresourceIntegrityPlugin({
+            hashFuncNames: ['sha512']
         }),
 
-        // new SubresourceIntegrityPlugin({
-        //     hashFuncNames: ['sha512']
-        // }),
-
         new HtmlWebpackPlugin({
-            template: resolve(__dirname, SOURCE_PATH, 'index.html')
+            template: resolve(__dirname, 'src', 'index.html')
+        }),
+
+        // Создание assets-manifest.json
+        new WebpackAssetsManifest({
+            // Хост, который будет добавлен к имени бандла
+            publicPath: '/',
+
+            // Имя результирующего файла с артефактами сборки
+            output: 'assets-manifest.json',
+
+            // Используется браузерами для проверки целостности файлов на случай их подмены
+            integrity: true,
+
+            // Алгоритм хеширования
+            integrityHashes: ['sha512']
         }),
 
         new ModuleFederationPlugin({
+            // ВНИМАНИЕ: не меняйте значение этого поля!
+            // Оно попадает в assets-manifest.json, откуда сервер будет возвращать информацию о сборке
             name: 'host',
-            filename: '[name].[contenthash].js',
+
+            // С этим именем файл будет храниться на диске.
+            // Если меняете значение этого поля, то убедитесь, что оно будет уникальным и валидным.
+            filename: `host.[contenthash].js`,
+
+            // Этот блок позволяет создать глобальную переменную с динамическим именем.
+            // Вместо него вы можете использовать name, но тогда не получится подставить имя пакета,
+            // поскольку webpack запрещает передавать туда спецсимволы.
+            // По этой причине старайтесь не менять указанные настройки, чтобы не потерять гибкость при работе модулями
+            // library: {
+            //     type: 'window',
+            //     name
+            // },
+
+            // Указывайте здесь список зависимостей, которые пересекаются с родительским контейнером.
+            // webpack поможет исключить дубликаты и получить доступ к общим зависимостям.
             shared: {
                 'react': {
                     requiredVersion: dependencies.react
@@ -146,8 +184,15 @@ module.exports = {
             }
         }),
 
+        // Показывает прогресс сборки
+        new webpack.ProgressPlugin(),
+
+        // Очищает сборочную директорию без перезапуска сервера.
+        // Стандартная опция clean так делать не умеет.
         new CleanWebpackPlugin({
             verbose: true
         })
     ]
 };
+
+module.exports = config;

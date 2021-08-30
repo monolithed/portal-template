@@ -1,4 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {
+    FunctionComponent,
+    useEffect
+} from 'react';
 
 import {
     Route,
@@ -13,7 +16,7 @@ import {items} from './data';
 
 type Props = JSX.IntrinsicElements['section'];
 
-const Video: React.FC<Props> = (props) => {
+const Video: FunctionComponent<Props> = (props) => {
     const history = useHistory();
     const {url, path} = useRouteMatch();
     const {pathname} = useLocation();

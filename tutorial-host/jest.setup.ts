@@ -1,5 +1,5 @@
 import {configure} from '@testing-library/dom'
-import ResizeObserver from './__mocks__/ResizeObserver';
+import ResizeObserver from './__mocks__/browser/ResizeObserver';
 
 configure({
     testIdAttribute: 'data-test-id'

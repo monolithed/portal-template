@@ -3,7 +3,7 @@ module.exports = {
     verbose: true,
     preset: 'ts-jest',
     moduleNameMapper: {
-        '\\.css$': '<rootDir>/__mocks__/styleMock.js'
+        '\\.css$': '<rootDir>/__mocks__/styles.js'
     },
     coveragePathIgnorePatterns: [
         '/node_modules/',
