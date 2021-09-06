@@ -71,8 +71,9 @@ const config = {
         path: resolve(__dirname, 'dist'),
 
         // Хост, который будет добавлен к имени файла
-        // ВНИМАНИЕ: Не меняйте значение auto, иначе получите ошибку ChunkLoadError у загружаемого модуля
-        publicPath: 'auto',
+        // ВНИМАНИЕ: Не меняйте значение, иначе получите ошибку ChunkLoadError у загружаемого модуля и
+        // неправильный путь к основной сборке
+        publicPath: '/',
 
         // chunkFilename: " [name]/[id].[chunkhash].chunk.js"
         crossOriginLoading: 'anonymous', // use-credentials
