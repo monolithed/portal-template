@@ -47,11 +47,7 @@ const App: FunctionComponent<Props> = () => {
                     <BrowserRouter>
                         <Layout header={<PortalMenu />}>
                             <Switch>
-                                <Route path={Routes.HOME} exact={true}>
-                                    <About />
-                                </Route>
-
-                                <Route path={Routes.ABOUT}>
+                                <Route path={[Routes.HOME, Routes.ABOUT]} exact={true}>
                                     <About />
                                 </Route>
 
