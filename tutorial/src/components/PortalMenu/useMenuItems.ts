@@ -4,10 +4,12 @@ import {Routes} from '../../routes';
 
 enum Menu {
     ABOUT = 'Локальный модуль',
-    VIDEO = 'Динамический модуль',
+    VIDEO = 'Динамический модуль'
 }
 
-const items: Item[] = [
+type Items = Array<Item & Required<{href: string}>>;
+
+const items: Items = [
     {
         label: Menu.ABOUT,
         href: Routes.ABOUT,
@@ -21,19 +23,25 @@ const items: Item[] = [
 
 const useMenuItems = (): Item[] => {
     const history = useHistory();
-    const {pathname} = useLocation();
+    let {pathname} = useLocation();
 
-    return items.map((item) => ({
-        ...item,
-        active: pathname.indexOf(item.href || '') === 0,
-        onClick: (event) => {
-            const {href = Routes.HOME} = item;
+    return items.map((item) => {
+        const {href} = item;
 
-            history.push(href);
-
-            event.preventDefault();
+        if (pathname === Routes.HOME) {
+            pathname = Routes.ABOUT;
         }
-    }));
+
+        return {
+            ...item,
+            active: pathname.includes(href),
+            onClick: (event) => {
+                history.push(href);
+
+                event.preventDefault();
+            }
+        }
+    });
 };
 
 export {useMenuItems};
