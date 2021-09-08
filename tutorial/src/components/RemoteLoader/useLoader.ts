@@ -1,15 +1,12 @@
-import {
-    useEffect,
-    useState
-} from 'react';
+import { useEffect, useState } from 'react';
 
-import {addScript} from '@monolithed/module-federation-loader';
-import {fetchBundle} from '../../api/workspace/bundle';
+import { addScript } from '@monolithed/module-federation-loader';
+import { fetchBundle } from '../../api/workspace/bundle';
 
 type State = {
     loading: boolean;
     error?: string;
-}
+};
 
 const useLoader = (name: string): State => {
     const [loading, setLoading] = useState<boolean>(true);
@@ -24,7 +21,7 @@ const useLoader = (name: string): State => {
             let integrity: string;
 
             try {
-                ({src, integrity} = await fetchBundle({name}));
+                ({ src, integrity } = await fetchBundle({ name }));
             } catch {
                 setError(`Could not fetch the "${name}" bundle`);
 
@@ -32,7 +29,7 @@ const useLoader = (name: string): State => {
             }
 
             try {
-                const {script} = await addScript({
+                const { script } = await addScript({
                     src,
                     integrity,
                     crossOrigin: 'anonymous'
@@ -54,7 +51,7 @@ const useLoader = (name: string): State => {
         };
     }, [name]);
 
-    return {loading, error};
+    return { loading, error };
 };
 
-export {useLoader};
+export { useLoader };

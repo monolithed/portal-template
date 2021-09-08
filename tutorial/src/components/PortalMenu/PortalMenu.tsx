@@ -1,17 +1,11 @@
-import React, {FunctionComponent} from 'react';
-import {Link} from 'react-router-dom';
+import React, { FunctionComponent, useState } from 'react';
 
-import {
-    Header,
-    HeaderModule,
-    HeaderMenu,
-    HeaderLogin,
-    HeaderLogo
-} from '@consta/uikit/Header';
+import { Header, HeaderModule, HeaderMenu, HeaderLogin, HeaderLogo } from '@consta/uikit/Header';
 
-import {Routes} from '../../routes';
-import {Logo} from './Logo';
-import {useMenuItems} from './useMenuItems';
+import { Logo } from './Logo';
+import { useMenuItems } from './useMenuItems';
+import { ROUTES_NAMES } from '../../modules/route/routes';
+import { Link } from 'react-router5';
 
 type Props = {};
 
@@ -24,13 +18,13 @@ const PortalMenu: FunctionComponent<Props> = () => {
                 <>
                     <HeaderModule>
                         <HeaderLogo>
-                            <Link to={Routes.HOME}>
+                            <Link routeName={ROUTES_NAMES.ROOT}>
                                 <Logo />
                             </Link>
                         </HeaderLogo>
                     </HeaderModule>
 
-                    <HeaderModule indent="l">
+                    <HeaderModule indent='l'>
                         <HeaderMenu items={items} />
                     </HeaderModule>
                 </>
@@ -39,9 +33,9 @@ const PortalMenu: FunctionComponent<Props> = () => {
                 <HeaderModule>
                     <HeaderLogin
                         isLogged={true}
-                        personName="Александр Абашкин"
-                        personInfo="ПАО «Газпромнефть»"
-                        personStatus="available"
+                        personName='Александр Абашкин'
+                        personInfo='ПАО «Газпромнефть»'
+                        personStatus='available'
                     />
                 </HeaderModule>
             }
@@ -49,4 +43,4 @@ const PortalMenu: FunctionComponent<Props> = () => {
     );
 };
 
-export {PortalMenu};
+export { PortalMenu };
