@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { Item } from '@consta/uikit/__internal__/src/components/Header/Menu/HeaderMenu';
 
 import { ROUTES_NAMES, getLabel, RouteName } from '../../modules/route/routes';
