@@ -1,21 +1,23 @@
 import React from 'react';
 import YouTube from 'react-youtube';
-import {useParams} from 'react-router-dom';
 
-import {Item, items} from '../data';
+import { Item, items } from '../data';
 
+import { useRoute } from 'react-router5';
 const Content = () => {
+    const { route } = useRoute();
     const [defaultItem] = items;
-    const {videoId = defaultItem.videoId} = useParams<Item>();
+    const { id = defaultItem.videoId } = route.params;
 
     return (
-        <YouTube videoId={videoId}
-                 opts={{
-                     height: '405',
-                     width: '720'
-                 }}
+        <YouTube
+            videoId={id}
+            opts={{
+                height: '405',
+                width: '720'
+            }}
         />
     );
 };
 
-export {Content};
+export { Content };

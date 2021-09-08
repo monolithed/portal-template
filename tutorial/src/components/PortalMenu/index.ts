@@ -1,1 +1,1 @@
-export {PortalMenu} from './PortalMenu';
+export { PortalMenu } from './PortalMenu';

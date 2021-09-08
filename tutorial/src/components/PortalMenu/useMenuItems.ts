@@ -1,47 +1,22 @@
-import {Item} from '@consta/uikit/__internal__/src/components/Header/Menu/HeaderMenu';
-import {useHistory, useLocation} from 'react-router-dom';
-import {Routes} from '../../routes';
+import { Item } from '@consta/uikit/__internal__/src/components/Header/Menu/HeaderMenu';
 
-enum Menu {
-    ABOUT = 'Локальный модуль',
-    VIDEO = 'Динамический модуль'
-}
+import { ROUTES_NAMES, getLabel, RouteName } from '../../modules/route/routes';
+import { useRoute } from 'react-router5';
 
-type Items = Array<Item & Required<{href: string}>>;
-
-const items: Items = [
-    {
-        label: Menu.ABOUT,
-        href: Routes.ABOUT,
-        active: true
-    },
-    {
-        label: Menu.VIDEO,
-        href: Routes.TUTORIAL
-    }
-];
+const items: RouteName[] = [ROUTES_NAMES.ABOUT, ROUTES_NAMES.TUTORIAL];
 
 const useMenuItems = (): Item[] => {
-    const history = useHistory();
-    let {pathname} = useLocation();
+    const { router } = useRoute();
 
-    return items.map((item) => {
-        const {href} = item;
-
-        if (pathname === Routes.HOME) {
-            pathname = Routes.ABOUT;
+    return items.map((item) => ({
+        label: getLabel(item),
+        href: router.buildPath(item),
+        active: router.isActive(item),
+        onClick: (e) => {
+            e.preventDefault();
+            router.navigate(item);
         }
-
-        return {
-            ...item,
-            active: pathname.includes(href),
-            onClick: (event) => {
-                history.push(href);
-
-                event.preventDefault();
-            }
-        }
-    });
+    }));
 };
 
-export {useMenuItems};
+export { useMenuItems };

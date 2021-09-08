@@ -1,18 +1,18 @@
-const {resolve} = require('path');
+const { resolve } = require('path');
 const webpack = require('webpack');
 
 const WebpackAssetsManifest = require('webpack-assets-manifest');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const {SubresourceIntegrityPlugin} = require('webpack-subresource-integrity');
+const { SubresourceIntegrityPlugin } = require('webpack-subresource-integrity');
 const open = require('open');
 const mocker = require('mocker-api');
 
-const {name, dependencies} = require('./package.json');
+const { name, dependencies } = require('./package.json');
 const api = require('./__mocks__/api');
 
-const {container} = webpack;
-const {ModuleFederationPlugin} = container;
+const { container } = webpack;
+const { ModuleFederationPlugin } = container;
 
 const config = {
     devServer: {
@@ -45,7 +45,7 @@ const config = {
         // Открыть новую или использовать уже существующую вкладку
         // Стандратная опция так делать не умеет
         after: async () => {
-            const {host, port} = config.devServer;
+            const { host, port } = config.devServer;
 
             await open(`http://${host}:${port}`);
         }
@@ -77,14 +77,14 @@ const config = {
         publicPath: '/',
 
         // chunkFilename: " [name]/[id].[chunkhash].chunk.js"
-        crossOriginLoading: 'anonymous', // use-credentials
+        crossOriginLoading: 'anonymous' // use-credentials
     },
 
     experiments: {
         topLevelAwait: true
     },
 
-/*
+    /*
     optimization: {
         moduleIds: 'deterministic',
         runtimeChunk: 'single',
@@ -109,10 +109,7 @@ const config = {
             },
             {
                 test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
+                use: ['style-loader', 'css-loader']
             }
         ]
     },
@@ -182,6 +179,21 @@ const config = {
                 },
                 '@consta/uikit': {
                     requiredVersion: dependencies['@consta/uikit']
+                },
+                'router5': {
+                    requiredVersion: dependencies['router5']
+                },
+                'react-router5': {
+                    requiredVersion: dependencies['react-router5']
+                },
+                'router5-plugin-browser': {
+                    requiredVersion: dependencies['router5-plugin-browser']
+                },
+                'reatom-router5': {
+                    requiredVersion: dependencies['reatom-router5']
+                },
+                'router5-plugin-logger': {
+                    requiredVersion: dependencies['router5-plugin-logger']
                 }
             }
         }),
