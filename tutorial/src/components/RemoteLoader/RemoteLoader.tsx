@@ -33,7 +33,7 @@ const RemoteLoader: ServiceComponent<Props> = ({children, remote, module}): JSX.
     return (
         <ErrorBoundary>
             <Suspense fallback={<SkeletonText rows={4} />}>
-                <Component>{...children.props}</Component>
+                <Component>{children.props}</Component>
             </Suspense>
         </ErrorBoundary>
     );
