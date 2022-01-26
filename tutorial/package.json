@@ -1,7 +1,7 @@
 {
     "name": "@gazprom-neft/tutorial-host",
-    "version": "1.0.0",
-    "author": "Aleksandr Abashkin <monolithed@gmail.com>",
+    "version": "0.0.1",
+    "author": "Gazprom Neft",
     "license": "MIT",
     "scripts": {
         "dev": "webpack --mode development",

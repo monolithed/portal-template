@@ -1,7 +1,7 @@
 {
     "name": "@gazprom-neft/tutorial-video",
     "version": "0.0.1",
-    "author": "Aleksandr Abashkin <monolithed@gmail.com>",
+    "author": "Gazprom Neft",
     "license": "MIT",
     "scripts": {
         "dev": "webpack --mode development",
@@ -46,12 +46,12 @@
         "webpack-subresource-integrity": "5.0.0"
     },
     "dependencies": {
-        "@consta/uikit": "^2.2.1",
-        "@reatom/core": "^1.1.5",
-        "@reatom/react": "^1.2.0",
-        "react": "^17.0.1",
-        "react-dom": "^17.0.1",
-        "react-router-dom": "^5.2.0",
-        "react-youtube": "^7.14.0"
+        "@consta/uikit": "3.14.0",
+        "@reatom/core": "1.1.5",
+        "@reatom/react": "1.2.0",
+        "react": "17.0.1",
+        "react-dom": "17.0.1",
+        "react-router-dom": "5.2.0",
+        "react-youtube": "7.14.0"
     }
 }
