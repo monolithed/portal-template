@@ -171,9 +171,6 @@ const config = {
                 'react-router-dom': {
                     requiredVersion: dependencies['react-router-dom']
                 },
-                'react-query': {
-                    requiredVersion: dependencies['react-query']
-                },
                 '@reatom/core': {
                     requiredVersion: dependencies['@reatom/core']
                 },

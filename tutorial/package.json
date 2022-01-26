@@ -44,17 +44,16 @@
         "webpack-dev-server": "^3.11.2"
     },
     "dependencies": {
-        "@consta/uikit": "^2.2.1",
-        "@monolithed/error-boundary-component": "^0.0.3",
-        "@monolithed/logger": "^0.1.0",
-        "@monolithed/module-federation-loader": "^0.0.1",
-        "@reatom/core": "^1.1.5",
-        "@reatom/react": "^1.2.0",
-        "ky": "^0.28.5",
-        "mocker-api": "^2.9.0",
-        "react": "^17.0.1",
-        "react-dom": "^17.0.1",
-        "react-query": "^3.19.2",
-        "react-router-dom": "^5.2.0"
+        "@consta/uikit": "3.13.0",
+        "@monolithed/error-boundary-component": "0.0.3",
+        "@monolithed/logger": "0.1.0",
+        "@monolithed/module-federation-loader": "0.0.1",
+        "@reatom/core": "1.1.5",
+        "@reatom/react": "1.2.0",
+        "ky": "0.28.5",
+        "mocker-api": "2.9.0",
+        "react": "17.0.1",
+        "react-dom": "17.0.1",
+        "react-router-dom": "5.2.0"
     }
 }

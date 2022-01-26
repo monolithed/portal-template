@@ -9,11 +9,6 @@ import {
 } from 'react-router-dom';
 
 import {
-    QueryClient,
-    QueryClientProvider
-} from 'react-query';
-
-import {
     Theme,
     presetGpnDefault
 } from '@consta/uikit/Theme';
@@ -35,30 +30,26 @@ import {Routes} from './routes';
 
 type Props = {};
 
-const queryClient = new QueryClient();
-
 const App: FunctionComponent<Props> = () => {
     const store = createStore();
 
     return (
         <ReatomContext.Provider value={store}>
-            <QueryClientProvider client={queryClient}>
-                <Theme preset={presetGpnDefault}>
-                    <BrowserRouter>
-                        <Layout header={<PortalMenu />}>
-                            <Switch>
-                                <Route path={[Routes.HOME, Routes.ABOUT]} exact={true}>
-                                    <About />
-                                </Route>
+            <Theme preset={presetGpnDefault}>
+                <BrowserRouter>
+                    <Layout header={<PortalMenu/>}>
+                        <Switch>
+                            <Route path={[Routes.HOME, Routes.ABOUT]} exact={true}>
+                                <About/>
+                            </Route>
 
-                                <Route path={Routes.TUTORIAL}>
-                                    <Tutorial />
-                                </Route>
-                            </Switch>
-                        </Layout>
-                    </BrowserRouter>
-                </Theme>
-            </QueryClientProvider>
+                            <Route path={Routes.TUTORIAL}>
+                                <Tutorial/>
+                            </Route>
+                        </Switch>
+                    </Layout>
+                </BrowserRouter>
+            </Theme>
         </ReatomContext.Provider>
     );
 };
